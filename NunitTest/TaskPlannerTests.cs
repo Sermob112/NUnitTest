@@ -1,23 +1,24 @@
-﻿using NUnit.Framework;
+﻿using ClassLibraryForTests;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace NunitTest
+
+namespace NunitTests
 {
     public class TaskManagementTests
     {
         [Test]
         public void Employee_CanOnlyAssignTasksToSelf()
         {
-            // Arrange
+            
             var taskManager = new TaskManager();
 
             var employee = new Employee { Name = "Alice", Role = EmployeeRole.Employee };
             var manager = new Employee { Name = "Bob", Role = EmployeeRole.Manager };
-            var task = new Task
+            var task = new ClassLibraryForTests.Task
             {
                 Description = "Call client",
                 Priority = TaskPriority.Medium,
@@ -25,14 +26,13 @@ namespace NunitTest
                 CreatedDate = DateTime.Now
             };
 
-            // Act & Assert
-            // Employee assigning a task to themselves
+            
             Assert.DoesNotThrow(() => taskManager.AssignTask(task, employee, employee));
 
-            // Employee assigning a task to someone else
+       
             Assert.Throws<InvalidOperationException>(() => taskManager.AssignTask(task, employee, manager));
 
-            // Manager assigning a task to themselves or another employee
+            
             Assert.DoesNotThrow(() => taskManager.AssignTask(task, manager, manager));
             Assert.DoesNotThrow(() => taskManager.AssignTask(task, manager, employee));
         }
@@ -43,7 +43,7 @@ namespace NunitTest
             // Arrange
             var taskManager = new TaskManager();
             var employee = new Employee { Name = "Alice", Role = EmployeeRole.Employee };
-            var task = new Task
+            var task = new ClassLibraryForTests.Task
             {
                 Description = "Send email",
                 Priority = TaskPriority.High,
@@ -51,21 +51,21 @@ namespace NunitTest
                 ContactPerson = new Contact { Name = "Jane Smith", Phone = "+987654321" }
             };
 
-            // Act
+           
             taskManager.AssignTask(task, employee, employee);
             taskManager.MarkTaskAsCompleted(task, employee);
 
-            // Assert
+            
             Assert.Throws<InvalidOperationException>(() => taskManager.UpdateTask(task, t => t.Description = "Updated email"));
         }
 
         [Test]
         public void Task_IsDeletedAfterOneYearOfCompletion()
         {
-            // Arrange
+            
             var taskManager = new TaskManager();
             var employee = new Employee { Name = "Alice", Role = EmployeeRole.Employee };
-            var task = new Task
+            var task = new ClassLibraryForTests.Task
             {
                 Description = "Setup meeting",
                 Priority = TaskPriority.Low,
@@ -77,10 +77,10 @@ namespace NunitTest
             taskManager.AssignTask(task, employee, employee);
             taskManager.MarkTaskAsCompleted(task, employee);
 
-            // Act
+            
             taskManager.RemoveExpiredTasks();
 
-            // Assert
+            
             Assert.That(taskManager.Tasks, Does.Not.Contain(task), "Tasks older than 12 months should be removed.");
         }
     }
