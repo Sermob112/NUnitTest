@@ -1,18 +1,20 @@
-﻿using NUnit.Framework;
+﻿using ClassLibraryForTests;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task = ClassLibraryForTests.Task;
 
-namespace NunitTest
+namespace NunitTests
 {
     public class TaskReportingTests
     {
         [Test]
         public void SearchClients_ByAttributes_ReturnsCorrectResults()
         {
-            // Arrange
+           
             var clientManager = new ClientManager();
             clientManager.AddClient(new Client { Name = "Tech Corp", City = "New York", ContactName = "John Doe" });
             clientManager.AddClient(new Client { Name = "Health Inc", City = "Los Angeles", ContactName = "Jane Smith" });
@@ -42,7 +44,7 @@ namespace NunitTest
                 Assignee = employee,
                 CreatedDate = DateTime.Now.AddDays(-10),
                 DueDate = DateTime.Now.AddDays(-5),
-                CompletedDate = DateTime.Now.AddDays(-6) // Completed on time
+                CompletedDate = DateTime.Now.AddDays(-6) 
             });
 
             taskManager.AddTask(new Task
@@ -50,7 +52,7 @@ namespace NunitTest
                 Assignee = employee,
                 CreatedDate = DateTime.Now.AddDays(-20),
                 DueDate = DateTime.Now.AddDays(-10),
-                CompletedDate = DateTime.Now.AddDays(-8) // Completed late
+                CompletedDate = DateTime.Now.AddDays(-8) 
             });
 
             taskManager.AddTask(new Task
@@ -58,7 +60,7 @@ namespace NunitTest
                 Assignee = employee,
                 CreatedDate = DateTime.Now.AddDays(-15),
                 DueDate = DateTime.Now.AddDays(-5),
-                CompletedDate = null // Overdue and not completed
+                CompletedDate = null
             });
 
             taskManager.AddTask(new Task
@@ -66,7 +68,7 @@ namespace NunitTest
                 Assignee = employee,
                 CreatedDate = DateTime.Now.AddDays(-5),
                 DueDate = DateTime.Now.AddDays(5),
-                CompletedDate = null // Not overdue, not completed
+                CompletedDate = null 
             });
 
             // Act

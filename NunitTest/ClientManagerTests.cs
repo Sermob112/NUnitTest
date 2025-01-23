@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using ClassLibraryForTests;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace NunitTest
+namespace NunitTests
 {
     public class ClientManagerTests
     {
@@ -40,20 +41,20 @@ namespace NunitTest
 
         public void ContactManager_ShouldSupportContinuousClientContact()
         {
-            // Arrange
+            
             var contactManager = new ContactManager();
 
             var client1 = new Client { Name = "Company A", IsCurrent = true };
             var client2 = new Client { Name = "Company B", IsCurrent = false };
 
-            // Act
+           
             contactManager.AddClient(client1);
             contactManager.AddClient(client2);
 
             var allClients = contactManager.GetClientList();
             var searchResult = contactManager.SearchClient("Company A");
 
-            // Assert
+           
             Assert.That(allClients.Count, Is.EqualTo(2), "The system should have 2 clients.");
             Assert.That(allClients, Has.Exactly(1).Matches<Client>(c => c.Name == "Company A"), "Company A should be in the client list.");
             Assert.That(searchResult, Is.Not.Null, "Search should return a result for an existing client.");
